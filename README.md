@@ -2,6 +2,8 @@
 
 Unicode Solitaire Game for the terminal, based on the Klondike solitaire game.
 
+![soliterm screenshot](/screenshots/soliterm.png)
+
 ## Dependencies
 
 This project needs `python-colorama` (see [requirements.txt](/requirements.txt))
