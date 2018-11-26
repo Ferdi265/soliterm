@@ -42,7 +42,7 @@ locations = {
     "s": Location.SPADES
 }
 
-def parse_loc(arg: str) -> Union[Location, int]:
+def parse_loc(arg: str) -> Union[Location, int, None]:
     if arg in locations:
         return locations[arg]
     elif all(map(lambda c: c in "0123456789", arg)):

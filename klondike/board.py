@@ -82,7 +82,7 @@ class Board:
             ],
         })
 
-    def draw(self) -> Card:
+    def draw(self) -> Optional[Card]:
         if len(self.deck) > 0:
             return self.deck.pop()
         elif len(self.drop) > 0:
@@ -100,7 +100,8 @@ class Board:
 
     def draw_deck(self):
         card = self.draw()
-        self.drop.append(card)
+        if card != None:
+            self.drop.append(card)
 
     def move_to_board_allowed(self, moved_cards: List[Card], target: List[BoardCard]) -> bool:
         #print(">> move to board allowed")
