@@ -105,6 +105,10 @@ def cmd_auto(args: List[str]) -> Optional[str]:
         found = True
         while found:
             found = False
+            if b.move_drop_to_foundation_allowed():
+                none_found = False
+                found = True
+                b.move_drop_to_foundation()
             for i in range(len(b.board)):
                 if b.move_board_to_foundation_allowed(b.board[i]):
                     none_found = False

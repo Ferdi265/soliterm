@@ -192,6 +192,12 @@ class Board:
         self.move_to_board(self.drop[-1:], dest)
         del self.drop[-1:]
 
+    def move_drop_to_foundation_allowed(self):
+        if len(self.drop) == 0:
+            return False
+
+        return self.move_to_foundation_allowed(self.drop[-1])
+
     def move_drop_to_foundation(self):
         if len(self.drop) == 0:
             raise ValueError("no cards in drop zone")
