@@ -131,6 +131,18 @@ def cmd_exit(args: List[str]) -> Optional[str]:
         remove_autosave()
         sys.exit(0)
 
+def cmd_restart(args: List[str]) -> Optional[str]:
+    global b
+    if len(args) != 0:
+        return "restart: invalid usage: see help\n"
+    else:
+        ans = None
+        while ans != "" and ans != "y" and ans != "n":
+            ans = input("Do you really want to restart? [y/N] ").lower()
+
+        if ans == "y":
+            b = Board()
+
 def cmd_save(args: List[str]) -> Optional[str]:
     if len(args) != 1:
         return "save: invalid usage: see help\n"
@@ -165,6 +177,8 @@ def cmd_help(args: List[str]) -> Optional[str]:
         "    - draw the next card from the deck\n"
         "  exit or quit\n"
         "    - end the game\n"
+        "  restart\n"
+        "    - restart the game\n"
         "  save [file]\n"
         "    - save progress into [file]\n"
         "  load [file]\n"
@@ -212,6 +226,9 @@ commands = {
 
     "quit": cmd_exit,
     "q": cmd_exit,
+
+    "restart": cmd_restart,
+    "r": cmd_restart,
 
     "save": cmd_save,
     "s": cmd_save,
