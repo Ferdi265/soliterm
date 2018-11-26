@@ -253,7 +253,7 @@ def main():
             redraw()
             while not parse_cmd():
                 pass
-            cmd_save([savefile])
+            cmd_save([autosave_name()])
             print()
         print("Congratulations, you won!")
     except EOFError:
