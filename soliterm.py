@@ -124,6 +124,7 @@ def cmd_exit(args: List[str]) -> Optional[str]:
     if len(args) != 0:
         return "exit: invalid usage: see help\n"
     else:
+        remove_autosave()
         sys.exit(0)
 
 def cmd_save(args: List[str]) -> Optional[str]:
@@ -223,27 +224,42 @@ def redraw():
     print("\033[1J\033[0;0H", end = "")
     print(b.display())
 
-def main(savefile = "/tmp/tmp.soliterm.save"):
+def autosave_name() -> str:
+    savefile = "/tmp/tmp.soliterm"
+    if "USER" in os.environ:
+        savefile += "." + os.environ["USER"]
+    savefile += ".save"
+    return savefile
+
+def check_autosave():
+    savefile = autosave_name()
+    if os.path.isfile(savefile):
+        ans = None
+        while ans != "" and ans != "y" and ans != "n":
+            ans = input("Automatic save file found, load it? [Y/n] ").lower()
+
+        if ans == "" or ans == "y":
+            cmd_load([savefile])
+
+def remove_autosave():
+    savefile = autosave_name()
+    if os.path.isfile(savefile):
+        os.remove(savefile)
+
+def main():
     try:
-        if os.path.isfile(savefile):
-            ans = None
-            while ans != "" and ans != "y" and ans != "n":
-                ans = input("Automatic save file found, load it? [Y/n] ").lower()
-
-            if ans == "" or ans == "y":
-                cmd_load([savefile])
-
+        check_autosave()
         while not b.game_won():
             redraw()
             while not parse_cmd():
                 pass
             cmd_save([savefile])
             print()
+        print("Congratulations, you won!")
     except EOFError:
         pass
 
-    if os.path.isfile(savefile):
-        os.remove(savefile)
+    remove_autosave()
 
 if __name__ == "__main__":
     main()
