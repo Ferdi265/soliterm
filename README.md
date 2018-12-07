@@ -8,12 +8,11 @@ Unicode Solitaire Game for the terminal, based on the Klondike solitaire game.
 
 ## Dependencies
 
-This project needs `python-colorama` (see [requirements.txt](/requirements.txt)),
-Python 3.7 (for type hinting), and a unicode-compatible terminal emulator (to
-render the playing cards).
+This project needs `python-colorama` (see
+[requirements.txt](/requirements.txt)) and a unicode-compatible terminal
+emulator (to render the playing cards).
 
-Python 3.6 and lower support can be achieved by removing the type hints from the
-code.
+Both Python2 and Python3 are supported.
 
 ## Rendering
 
