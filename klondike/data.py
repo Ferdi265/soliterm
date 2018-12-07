@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import *
 
 import colorama
 
@@ -34,7 +33,7 @@ class Value(Enum):
         else:
             return Value(self.value - 1)
 
-    def unicode_value(self) -> int:
+    def unicode_value(self):
         if self.value > Value.JACK.value:
             return self.value + 1
         else:
@@ -49,10 +48,10 @@ class Suit(Enum):
     DIAMONDS = 2
     SPADES = 3
 
-    def color(self) -> Color:
+    def color(self):
         return Color.RED if self.value % 2 == 0 else Color.BLACK
 
-    def unicode_symbol(self) -> int:
+    def unicode_symbol(self):
         return {
             Suit.HEARTS: 0x2665,
             Suit.CLUBS: 0x2663,
@@ -60,7 +59,7 @@ class Suit(Enum):
             Suit.SPADES: 0x2660
         }[self]
 
-    def unicode_base(self) -> int:
+    def unicode_base(self):
         return {
             Suit.HEARTS: 0x1F0B0,
             Suit.CLUBS: 0x1F0D0,
@@ -72,14 +71,11 @@ class Suit(Enum):
         return self.name
 
 class Card:
-    NONE: str = colorama.Fore.RESET + "  "
-    BLANK: str = colorama.Fore.GREEN + chr(Suit.SPADES.unicode_base()) + colorama.Fore.RESET
-    SLOT: str = chr(Suit.SPADES.unicode_base())
+    NONE = colorama.Fore.RESET + "  "
+    BLANK = colorama.Fore.GREEN + chr(Suit.SPADES.unicode_base()) + colorama.Fore.RESET
+    SLOT = chr(Suit.SPADES.unicode_base())
 
-    suit: Suit
-    value: Value
-
-    def __init__(self, suit: Suit, value: Value):
+    def __init__(self, suit, value):
         self.suit = suit
         self.value = value
 
@@ -97,7 +93,7 @@ class Card:
 
         return Card(self.suit, prevv)
 
-    def __str__(self) -> str:
+    def __str__(self):
         if self.suit.color() == Color.RED:
             c = colorama.Fore.RED
         else:

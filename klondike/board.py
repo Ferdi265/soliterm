@@ -1,22 +1,18 @@
 from enum import Enum
 from random import shuffle
-from typing import *
 
 import json
 
 from .data import *
 
-def display_stack_top(stack: List[Card], default: str) -> str:
+def display_stack_top(stack, default):
     if len(stack) == 0:
         return default
     else:
         return str(stack[-1])
 
 class BoardCard:
-    card: Card
-    revealed: bool
-
-    def __init__(self, card: Card, revealed: bool):
+    def __init__(self, card, revealed):
         self.card = card
         self.revealed = revealed
 
@@ -30,14 +26,6 @@ class BoardCard:
         return "BoardCard({}, {})".format(repr(self.card), self.revealed)
 
 class Board:
-    deck: List[Card]
-    drop: List[Card]
-    foundation: Tuple[List[Card], List[Card], List[Card], List[Card]]
-    board: Tuple[
-        List[BoardCard], List[BoardCard], List[BoardCard], List[BoardCard],
-        List[BoardCard], List[BoardCard], List[BoardCard]
-    ]
-
     def __init__(self):
         self.deck = [Card(Suit(s), Value(v)) for v in range(1, 14) for s in range(4)]
         shuffle(self.deck)
@@ -49,7 +37,7 @@ class Board:
         self.deal()
 
     @staticmethod
-    def deserialize(ser: str):
+    def deserialize(ser):
         board = Board()
         dic = json.loads(ser)
         try:
@@ -82,7 +70,7 @@ class Board:
             ],
         })
 
-    def draw(self) -> Optional[Card]:
+    def draw(self):
         if len(self.deck) > 0:
             return self.deck.pop()
         elif len(self.drop) > 0:
@@ -103,15 +91,7 @@ class Board:
         if card != None:
             self.drop.append(card)
 
-    def move_to_board_allowed(self, moved_cards: List[Card], target: List[BoardCard]) -> bool:
-        #print(">> move to board allowed")
-        #print("  moved cards:")
-        #for c in moved_cards:
-        #    print("    {}".format(repr(c)))
-        #print("  target:")
-        #for c in target:
-        #    print("    {}".format(repr(c)))
-
+    def move_to_board_allowed(self, moved_cards, target):
         if len(target) == 0:
             return moved_cards[0].value == Value.KING
 
@@ -123,14 +103,14 @@ class Board:
             bottom_card.value.value == target[-1].card.value.value - 1
         )
 
-    def move_to_board(self, moved_cards: List[Card], target: List[BoardCard]):
+    def move_to_board(self, moved_cards, target):
         if not self.move_to_board_allowed(moved_cards, target):
             raise ValueError("that move is not allowed")
 
         bcards = [BoardCard(c, True) for c in moved_cards]
         target += bcards
 
-    def move_to_foundation_allowed(self, card: Card) -> bool:
+    def move_to_foundation_allowed(self, card):
         foundation = self.foundation[card.suit.value]
         if len(foundation) == 0:
             req_val = 1
@@ -139,19 +119,13 @@ class Board:
 
         return card.value.value == req_val
 
-    def move_to_foundation(self, card: Card):
+    def move_to_foundation(self, card):
         if not self.move_to_foundation_allowed(card):
             raise ValueError("that move is not allowed")
 
         self.foundation[card.suit.value].append(card)
 
-    def board_substack_allowed(self, index: int, stack: List[BoardCard]):
-        #print(">> board substack allowed")
-        #print("  index: {}".format(index))
-        #print("  stack:")
-        #for c in stack:
-        #    print("    {}".format(repr(c)))
-
+    def board_substack_allowed(self, index, stack):
         if len(stack) == 0 or index == 0:
             return False
 
@@ -170,7 +144,7 @@ class Board:
 
         return True
 
-    def board_substack_remove(self, index: int, src: List[BoardCard]):
+    def board_substack_remove(self, index, src):
         if not self.board_substack_allowed(index, src):
             raise ValueError("cannot remove that substack")
 
@@ -178,14 +152,14 @@ class Board:
         if len(src) > 0:
             src[-1].revealed = True
 
-    def move_foundation_to_board(self, suit: Suit, dest: List[BoardCard]):
+    def move_foundation_to_board(self, suit, dest):
         if len(self.foundation[suit.value]) == 0:
             raise ValueError("no cards in that foundation zone")
 
         self.move_to_board(self.foundation[suit.value][-1:], dest)
         del self.foundation[suit.value][-1:]
 
-    def move_drop_to_board(self, dest: List[BoardCard]):
+    def move_drop_to_board(self, dest):
         if len(self.drop) == 0:
             raise ValueError("no cards in drop zone")
 
@@ -205,23 +179,14 @@ class Board:
         self.move_to_foundation(self.drop[-1])
         del self.drop[-1:]
 
-    def move_board_to_board_allowed(self, index: int, src: List[BoardCard], dest: List[BoardCard]):
-        #print(">> move board to board allowed")
-        #print("  index: {}".format(index))
-        #print("  src:")
-        #for c in src:
-        #    print("    {}".format(repr(c)))
-        #print("  dest:")
-        #for c in dest:
-        #    print("    {}".format(repr(c)))
-
+    def move_board_to_board_allowed(self, index, src, dest):
         if not self.board_substack_allowed(index, src):
             return False
 
         cards = [bc.card for bc in src[-index:]]
         return self.move_to_board_allowed(cards, dest)
 
-    def move_board_to_board(self, index: int, src: List[BoardCard], dest: List[BoardCard]):
+    def move_board_to_board(self, index, src, dest):
         if not self.board_substack_allowed(index, src):
             raise ValueError("cannot move that substack")
 
@@ -229,20 +194,20 @@ class Board:
         self.move_to_board(cards, dest)
         self.board_substack_remove(index, src)
 
-    def move_board_to_foundation_allowed(self, src: List[BoardCard]):
+    def move_board_to_foundation_allowed(self, src):
         if not self.board_substack_allowed(1, src):
             return False
 
         return self.move_to_foundation_allowed(src[-1].card)
 
-    def move_board_to_foundation(self, src: List[BoardCard]):
+    def move_board_to_foundation(self, src):
         if not self.board_substack_allowed(1, src):
             raise ValueError("cannot move that substack")
 
         self.move_to_foundation(src[-1].card)
         self.board_substack_remove(1, src)
 
-    def game_won(self) -> bool:
+    def game_won(self):
         return min(map(len, self.foundation)) == 13
 
     def display(self):

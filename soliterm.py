@@ -1,5 +1,6 @@
+from __future__ import print_function
+
 from enum import Enum
-from typing import *
 from klondike import *
 
 import os
@@ -42,7 +43,7 @@ locations = {
     "s": Location.SPADES
 }
 
-def parse_loc(arg: str) -> Union[Location, int, None]:
+def parse_loc(arg):
     if arg in locations:
         return locations[arg]
     elif all(map(lambda c: c in "0123456789", arg)):
@@ -53,7 +54,7 @@ def parse_loc(arg: str) -> Union[Location, int, None]:
         except:
             pass
 
-def cmd_move(args: List[str]) -> Optional[str]:
+def cmd_move(args):
     if len(args) == 2:
         src_arg = args[0]
         dest_arg = args[1]
@@ -97,7 +98,7 @@ def cmd_move(args: List[str]) -> Optional[str]:
     except ValueError as e:
         return "move: {}\n".format(e)
 
-def cmd_auto(args: List[str]) -> Optional[str]:
+def cmd_auto(args):
     if len(args) != 0:
         return "auto: invalid usage: see help\n"
     else:
@@ -118,20 +119,20 @@ def cmd_auto(args: List[str]) -> Optional[str]:
         if none_found:
             return "auto: nothing to do\n"
 
-def cmd_draw(args: List[str]) -> Optional[str]:
+def cmd_draw(args):
     if len(args) != 0:
         return "draw: invalid usage: see help\n"
     else:
         b.draw_deck()
 
-def cmd_exit(args: List[str]) -> Optional[str]:
+def cmd_exit(args):
     if len(args) != 0:
         return "exit: invalid usage: see help\n"
     else:
         remove_autosave()
         sys.exit(0)
 
-def cmd_restart(args: List[str]) -> Optional[str]:
+def cmd_restart(args):
     global b
     if len(args) != 0:
         return "restart: invalid usage: see help\n"
@@ -143,7 +144,7 @@ def cmd_restart(args: List[str]) -> Optional[str]:
         if ans == "y":
             b = Board()
 
-def cmd_save(args: List[str]) -> Optional[str]:
+def cmd_save(args):
     if len(args) != 1:
         return "save: invalid usage: see help\n"
     else:
@@ -154,7 +155,7 @@ def cmd_save(args: List[str]) -> Optional[str]:
         except Exception as e:
             return "save: could not save game\n"
 
-def cmd_load(args: List[str]) -> Optional[str]:
+def cmd_load(args):
     global b
     if len(args) != 1:
         return "load: invalid usage: see help\n"
@@ -165,7 +166,7 @@ def cmd_load(args: List[str]) -> Optional[str]:
         except Exception as e:
             return "load: could not load game\n"
 
-def cmd_help(args: List[str]) -> Optional[str]:
+def cmd_help(args):
     return (
         ("help: invalid usage\n" if len(args) != 0 else "") +
         "Valid commands are:\n\n"
@@ -245,7 +246,7 @@ def redraw():
     print("\033[1J\033[0;0H", end = "")
     print(b.display())
 
-def autosave_name() -> str:
+def autosave_name():
     savefile = "/tmp/tmp.soliterm"
     if "USER" in os.environ:
         savefile += "." + os.environ["USER"]
