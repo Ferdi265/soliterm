@@ -1,6 +1,13 @@
+# coding: utf-8
 from enum import Enum
 
 import colorama
+import sys
+
+if sys.version_info >= (3, 0):
+    xchr = chr
+else:
+    xchr = lambda c: unichr(c).encode('utf-8')
 
 class Color(Enum):
     RED = 0
@@ -72,8 +79,8 @@ class Suit(Enum):
 
 class Card:
     NONE = colorama.Fore.RESET + "  "
-    BLANK = colorama.Fore.GREEN + chr(Suit.SPADES.unicode_base()) + colorama.Fore.RESET
-    SLOT = chr(Suit.SPADES.unicode_base())
+    BLANK = colorama.Fore.GREEN + xchr(Suit.SPADES.unicode_base()) + colorama.Fore.RESET
+    SLOT = xchr(Suit.SPADES.unicode_base())
 
     def __init__(self, suit, value):
         self.suit = suit
@@ -99,7 +106,7 @@ class Card:
         else:
             c = colorama.Fore.BLACK
 
-        return c + chr(self.suit.unicode_base() + self.value.unicode_value()) + colorama.Fore.RESET
+        return c + xchr(self.suit.unicode_base() + self.value.unicode_value()) + colorama.Fore.RESET
 
     def __repr__(self):
         return "Card({}, {})".format(repr(self.suit), repr(self.value))

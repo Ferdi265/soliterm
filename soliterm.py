@@ -1,3 +1,4 @@
+# coding: utf-8
 from __future__ import print_function
 
 from enum import Enum
@@ -6,6 +7,11 @@ from klondike import *
 import os
 import sys
 import readline
+
+if sys.version_info >= (3, 0):
+    xinput = input
+else:
+    xinput = raw_input
 
 b = Board()
 
@@ -139,7 +145,7 @@ def cmd_restart(args):
     else:
         ans = None
         while ans != "" and ans != "y" and ans != "n":
-            ans = input("Do you really want to restart? [y/N] ").lower()
+            ans = xinput("Do you really want to restart? [y/N] ").lower()
 
         if ans == "y":
             b = Board()
@@ -194,12 +200,14 @@ def cmd_help(args):
     )
 
 def parse_cmd():
-    choice = input("> ")
+    choice = xinput("> ")
     args = choice.split(" ")
     if len(args) == 1 and args[0] == "":
         return True
 
-    cmd, *args = args
+    cmd = args[0]
+    args = args[1:]
+
     if cmd not in commands:
         print("{}: not a valid command: see help".format(cmd))
         return False
@@ -258,7 +266,7 @@ def check_autosave():
     if os.path.isfile(savefile):
         ans = None
         while ans != "" and ans != "y" and ans != "n":
-            ans = input("Automatic save file found, load it? [Y/n] ").lower()
+            ans = xinput("Automatic save file found, load it? [Y/n] ").lower()
 
         if ans == "" or ans == "y":
             cmd_load([savefile])
