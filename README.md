@@ -4,7 +4,10 @@ Unicode Solitaire Game for the terminal, based on the Klondike solitaire game.
 
 ![soliterm screenshot](/screenshots/soliterm.png)
 
-Watch me play it on [ASCIICast](https://asciinema.org/a/Mlo5jnMGhEnEtpcwag3xHNuxu)
+Watch me play it on [asciinema](https://asciinema.org/a/Mlo5jnMGhEnEtpcwag3xHNuxu)
+(note: asciinema doesn't support wide characters correctly in the online viewer,
+viewing the asciicast locally with a better terminal emulator is recommended,
+see Rendering)
 
 ## Dependencies
 
