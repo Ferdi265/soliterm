@@ -6,6 +6,7 @@ from klondike import *
 
 import os
 import sys
+import time
 import readline
 
 if sys.version_info >= (3, 0):
@@ -122,6 +123,7 @@ def cmd_auto(args):
                     found = True
                     b.move_board_to_foundation(b.board[i])
                     redraw()
+                    time.sleep(.10)
         if none_found:
             return "auto: nothing to do\n"
 
