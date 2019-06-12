@@ -79,8 +79,8 @@ class Suit(Enum):
 
 class Card:
     NONE = colorama.Fore.RESET + "  "
-    BLANK = colorama.Fore.GREEN + xchr(Suit.SPADES.unicode_base()) + colorama.Fore.RESET
-    SLOT = xchr(Suit.SPADES.unicode_base())
+    BLANK = colorama.Fore.GREEN + xchr(Suit.SPADES.unicode_base()) + " " + colorama.Fore.RESET
+    SLOT = xchr(Suit.SPADES.unicode_base()) + " "
 
     def __init__(self, suit, value):
         self.suit = suit
@@ -106,7 +106,7 @@ class Card:
         else:
             c = colorama.Fore.BLACK
 
-        return c + xchr(self.suit.unicode_base() + self.value.unicode_value()) + colorama.Fore.RESET
+        return c + xchr(self.suit.unicode_base() + self.value.unicode_value()) + " " + colorama.Fore.RESET
 
     def __repr__(self):
         return "Card({}, {})".format(repr(self.suit), repr(self.value))
