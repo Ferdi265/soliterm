@@ -28,8 +28,9 @@ It is also recommended to play with a relatively high font size to make the
 cards readable.
 
 For an optimal experience the Konsole terminal emulator is recommended, since it
-displays Unicode playing cards as double-width characters correctly and allows
-easy zooming / changing of the font size.
+doesn't cut off the double-width Unicode playing cards if they are followed by
+a space and allows easy zooming / changing of the font size. Gnome-Terminal also
+works, but zooming is a little more cumbersome than in Konsole.
 
 ## Rules
 
