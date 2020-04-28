@@ -41,7 +41,7 @@ from Ace to King. Cards on the board can be moved together in stacks of
 alternating colors and consecutive card values. An empty slot on the board may
 only be filled with a King.
 
-Cards from the deck are drawn one at a time, and there is not limit to the
+Cards from the deck are drawn one at a time, and there is no limit to the
 amount of passes through the deck. The deck is not shuffled after cycling
 through it.
 
